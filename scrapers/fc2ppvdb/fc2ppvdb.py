@@ -195,7 +195,13 @@ def send_request(video_id: str) -> ScrapedScene:
 
     log.debug(f"Receive object: {result}")
 
-    return export_scene(result)
+    try:
+        scene = export_scene(result)
+    except KeyError as key_error:
+        log.error(f"Failed to export article info, reason: {key_error} cannot be found")
+        sys.exit(1)
+
+    return scene
 
 
 if __name__ == "__main__":
